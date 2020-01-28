@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# polybuild - compile a SML program defined in a MLB file using Poly/ML
+#
+# Chris Cannam, 2015-2018. MIT licence
+
+set -e
+
+arg="$1"
+
+if [ -z "$arg" ]; then
+    echo "Usage: $0 file.sml" 1>&2
+    echo "       $0 file.mlb" 1>&2
+    exit 1
+fi
+
+shift
+set -u
+
+mydir=$(dirname "$0")
+
+. "$mydir/smlbuild-include.sh"
+
+out=$(get_outfile "$arg")
+tmpobj=$(get_tmpobjfile "$arg")
+
+trap "rm -f ${tmpobj}" 0
+
+( expand_arg "$arg" |
+	sed 's|^\(.*\)$|use "\1";|' ;            # wrap filenames in REPL use calls
+  echo 'PolyML.export("'"$tmpobj"'", main);' ) | # ask poly to export object file
+    poly -q --error-exit &&
+    polyc -o "$out" "$tmpobj"                    # compile object to executable
+
