@@ -1,5 +1,3 @@
-exception Empty
-
 signature Queue =
 sig
   type 'a Queue

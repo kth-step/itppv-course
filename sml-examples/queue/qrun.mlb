@@ -1,3 +1,4 @@
 Queue.sig
+QueueUtil.sml
 BatchedQueue.sml
 BatchedQueueMain.sml
