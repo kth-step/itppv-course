@@ -3,6 +3,8 @@ open arithmeticTheory stringTheory containerTheory pred_setTheory listTheory;
 
 val _ = new_theory "lambda";
 
+val clause_name = Define `clause_name (x:string) = T`;
+
 val _ = type_abbrev("var", ``:string``); (* term variable *)
 val _ = Hol_datatype ` 
 term =  (* term *)
